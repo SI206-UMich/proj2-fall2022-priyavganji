@@ -282,7 +282,7 @@ def check_policy_numbers(data):
         elif not re.search(pattern, i[3]):
             bad_nums_id.append(i[2])
 
-    print(bad_nums_id)
+    #print(bad_nums_id)
 
     return bad_nums_id
     
@@ -371,7 +371,6 @@ class TestCases(unittest.TestCase):
         # check that the first tuple is made up of the following:
         # 'Loft in Mission District', 210, '1944564', '2022-004088STR', 'Entire Room', 1
         self.assertEqual(detailed_database[0],('Loft in Mission District', 210, '1944564', '2022-004088STR', 'Entire Room', 1))
-        #self.assertEqual(detailed_database[0],)
         # check that the last tuple is made up of the following:
         # 'Guest suite in Mission District', 238, '32871760', 'STR-0004707', 'Entire Room', 1
         self.assertEqual(detailed_database[-1],('Guest suite in Mission District', 238, '32871760', 'STR-0004707', 'Entire Room', 1))

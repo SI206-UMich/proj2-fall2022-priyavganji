@@ -46,7 +46,7 @@ def get_listings_from_search_results(html_file):
         title = title_tags[i].text.strip()
         cost = int(cost_tags[i].text.replace('$','').strip()) 
         id = id_tag[i].get('href').split('?')[0].split('/')[-1]
-        
+
         list1.append((title, cost, id))
       
     return list1
@@ -102,7 +102,6 @@ def get_listing_information(listing_id):
     else:
         polnum = pnum
 
-
     # Place type
 
     type_room = (soup.find('h2', class_='_14i3z6h').contents)
@@ -125,7 +124,6 @@ def get_listing_information(listing_id):
 
     # Num of Bedrooms
     
-    
     room_num = (soup.find('div', class_='_tqmy57').find_all('span'))
     
     new_bed = ((room_num[5]).text)
@@ -135,32 +133,12 @@ def get_listing_information(listing_id):
     else:
         final_bedrooms = int(new_bed[0])
 
-    #print(new_bed)
-
-
-    '''
-    pattern = '(\d*).* bedroom[s]*'
-
-    bed = re.findall(pattern, new_bed)
-
-    #print(bed)
-    if len(bed) == 0:
-        final_bedrooms = 1
-
-    elif (bed[0]) == '':
-        final_bedrooms = 1
-
-    else:
-        final_bedrooms = (int(bed[0]))
-
-    '''
-    #tup = (polnum, room, final_bedrooms)
 
     polnum = str(polnum)
     room = str(room)
 
     tup = (polnum, room, final_bedrooms)
-    #print(tup)
+    
     return tup
     
 
@@ -183,12 +161,9 @@ def get_detailed_listing_database(html_file):
     ]
     """
     
-    #f_list = []
-    
 
     base_list = get_listings_from_search_results(html_file)
 
-    #print(base_list[0][0])
 
     detailed_list = []
     
@@ -197,17 +172,12 @@ def get_detailed_listing_database(html_file):
         title = i[0]
         cost = i[1]
         list_id = i[2]
-        #print(list_id)
         listing_info = (get_listing_information(list_id))
         pol_num = listing_info[0]
         place_type = listing_info[1]
         bedroom_num = listing_info[2]
-        #new_listinfo_tup = (title, cost, list_id, pol_num, place_type, bedroom_num)
         
         detailed_list.append((title, cost, list_id, pol_num, place_type, bedroom_num))
-    
-    #print(detailed_list)
-    #print(listing_info)
     
     return(detailed_list)
     
@@ -237,10 +207,8 @@ def write_csv(data, filename):
     This function should not return anything.
     """
 
-    
     sorted_data = sorted(data, key = lambda x: x[1])
     header = ["Listing Title", "Cost", "Listing ID", "Policy Number", "Place Type", "Number of Bedrooms"]
-
 
     with open(filename, 'w', newline='') as myFile:
         writer = csv.writer(myFile)
@@ -273,16 +241,12 @@ def check_policy_numbers(data):
     bad_nums_id = []
     pattern = r'20[0-9]{2}-00[0-9]{4}STR|STR-000[0-9]{4}'
 
-  
-
     for i in data:
 
         if i[3] == "Pending" or i[3] == "Exempt":
             continue
         elif not re.search(pattern, i[3]):
             bad_nums_id.append(i[2])
-
-    #print(bad_nums_id)
 
     return bad_nums_id
     
@@ -348,7 +312,6 @@ class TestCases(unittest.TestCase):
             # (NEED Check - 1)check that the third element in the tuple is an int
             self.assertEqual(type(listing_information[2]), int)
         # check that the first listing in the html_list has policy number 'STR-0001541'
-        #print(listing_informations[0][0])
         self.assertEqual((listing_informations[0][0]), 'STR-0001541')
         # check that the last listing in the html_list is a "Private Room"
         self.assertEqual((listing_informations[4][1]), "Private Room")
